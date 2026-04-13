@@ -17,7 +17,7 @@ echo  Both servers are starting...
 echo.
 echo  Frontend : http://localhost:5173
 echo  API Docs : http://localhost:5000/api/health
-echo  MongoDB  : localhost:27017/nexabank
+echo  MongoDB  : MongoDB Atlas (Cloud)
 echo =============================================
 echo.
 echo  Make sure MongoDB is running first!

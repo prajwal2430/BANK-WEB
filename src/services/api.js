@@ -22,8 +22,18 @@ const request = async (method, path, body) => {
     headers: headers(),
     ...(body ? { body: JSON.stringify(body) } : {}),
   });
-  const data = await res.json();
-  if (!res.ok) throw new Error(data.message || 'Request failed');
+
+  const contentType = res.headers.get('content-type');
+  let data;
+  
+  if (contentType && contentType.includes('application/json')) {
+    data = await res.json();
+  } else {
+    const textData = await res.text();
+    throw new Error(`Expected JSON but received ${contentType}. Status: ${res.status}. Content: ${textData.substring(0, 150)}`);
+  }
+
+  if (!res.ok) throw new Error(data?.message || 'Request failed');
   return data;
 };
 
