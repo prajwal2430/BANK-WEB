@@ -1,0 +1,122 @@
+/* Dashboard */
+.dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.dashboard-header-actions { display: flex; gap: 0.75rem; }
+
+.dashboard-main {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 0;
+}
+
+@media (max-width: 900px) {
+  .dashboard-main { flex-direction: column; }
+}
+
+/* Chart tooltip */
+.chart-tooltip {
+  background: var(--clr-bg-3);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.9rem;
+  font-size: 0.85rem;
+}
+.chart-tooltip-label { color: var(--clr-text-muted); margin-bottom: 2px; }
+.chart-tooltip-val { font-weight: 700; color: var(--clr-primary-light); font-size: 1rem; }
+
+/* Account mini list */
+.accounts-mini { display: flex; flex-direction: column; gap: 0.6rem; }
+
+.account-mini-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(59,127,255,0.04);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+.account-mini-item:hover {
+  border-color: var(--clr-border-hover);
+  background: rgba(59,127,255,0.08);
+}
+
+.account-mini-icon {
+  width: 34px; height: 34px;
+  background: rgba(59,127,255,0.12);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--clr-primary-light);
+  flex-shrink: 0;
+}
+.account-mini-info { flex: 1; }
+.account-mini-name { font-size: 0.85rem; font-weight: 600; color: var(--clr-text); }
+.account-mini-num  { font-size: 0.75rem; color: var(--clr-text-dim); }
+.account-mini-balance {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--clr-text);
+}
+
+/* Transaction amount */
+.txn-amount { font-weight: 700; font-family: var(--font-display); font-size: 0.95rem; }
+.txn-amount.credit { color: var(--clr-success); }
+.txn-amount.debit  { color: var(--clr-danger); }
+
+/* Quick Actions */
+.quick-actions {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
+
+.quick-action-btn {
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1rem;
+  text-align: center;
+  text-decoration: none;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.quick-action-btn:hover {
+  transform: translateY(-3px);
+  border-color: var(--clr-primary);
+  box-shadow: 0 8px 24px rgba(59,127,255,0.2);
+}
+
+.qa-icon {
+  width: 48px; height: 48px;
+  background: linear-gradient(135deg, rgba(59,127,255,0.15), rgba(0,212,180,0.1));
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--clr-primary-light);
+  margin: 0 auto 0.75rem;
+  transition: var(--transition);
+}
+
+.quick-action-btn:hover .qa-icon {
+  background: linear-gradient(135deg, var(--clr-primary), var(--clr-accent));
+  color: #fff;
+}
+
+.qa-label { font-size: 0.88rem; font-weight: 600; color: var(--clr-text); margin-bottom: 0.2rem; }
+.qa-sub   { font-size: 0.75rem; color: var(--clr-text-dim); }
+
+@media (max-width: 900px) {
+  .quick-actions { grid-template-columns: repeat(3, 1fr); }
+  .dashboard-header { flex-direction: column; }
+}
+
+@media (max-width: 600px) {
+  .quick-actions { grid-template-columns: repeat(2, 1fr); }
+}
