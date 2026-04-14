@@ -21,6 +21,10 @@ UserSchema.pre('save', async function () {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
   }
+  // Standardize phone number (strip non-digits)
+  if (this.isModified('phone')) {
+    this.phone = this.phone.replace(/\D/g, '');
+  }
   // Auto-generate avatar initials from name
   if (!this.avatar && this.name) {
     this.avatar = this.name

@@ -53,7 +53,7 @@ export default function Register() {
       await registerUser({
         name: form.name,
         email: form.email,
-        phone: form.phone,
+        phone: form.phone.replace(/\D/g, '').slice(-10),
         address: form.address,
         password: form.password,
       });

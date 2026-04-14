@@ -138,20 +138,32 @@ router.post('/transfer', async (req, res) => {
 router.get('/lookup', async (req, res) => {
   try {
     const { phone } = req.query;
-    if (!phone || phone.trim().length < 10)
+    if (!phone) return res.status(400).json({ success: false, message: 'Phone number required' });
+    
+    const cleanPhone = phone.replace(/\D/g, '');
+    if (cleanPhone.length < 10)
       return res.status(400).json({ success: false, message: 'Enter a valid 10-digit mobile number' });
 
-    const recipient = await User.findOne({ phone: phone.trim() }).select('name avatar phone kycStatus');
+    const recipient = await User.findOne({ 
+      phone: { $regex: new RegExp(cleanPhone.slice(-10) + '$') } 
+    }).select('name avatar phone kycStatus');
     if (!recipient)
       return res.status(404).json({ success: false, message: `No NexaBank account found for ${phone}` });
 
     if (recipient._id.toString() === req.user._id.toString())
       return res.status(400).json({ success: false, message: 'You cannot send money to your own mobile number' });
 
-    // Find their primary (first savings/checking) account
-    const recipientAccount = await Account.findOne({ user: recipient._id, status: 'Active' }).sort({ createdAt: 1 });
-    if (!recipientAccount)
-      return res.status(404).json({ success: false, message: 'Recipient has no active account' });
+    // Find their primary account, or create one if they don't have one (for legacy users)
+    let recipientAccount = await Account.findOne({ user: recipient._id, status: 'Active' }).sort({ createdAt: 1 });
+    
+    if (!recipientAccount) {
+      recipientAccount = await Account.create({
+        user: recipient._id,
+        type: 'Savings',
+        balance: 0,
+        status: 'Active'
+      });
+    }
 
     res.json({
       success: true,

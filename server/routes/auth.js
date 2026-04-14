@@ -1,6 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const Account = require('../models/Account');
 const { protect } = require('../middleware/auth');
 
 const router = express.Router();
@@ -19,6 +20,14 @@ router.post('/register', async (req, res) => {
     if (exists) return res.status(400).json({ success: false, message: 'Email already registered' });
 
     const user = await User.create({ name, email, phone, address, password });
+    
+    // Create a default Savings account for the new user
+    await Account.create({
+      user: user._id,
+      type: 'Savings',
+      balance: 1000, // Giving them a 1000 INR starting bonus for testing
+    });
+
     const token = signToken(user._id);
 
     res.status(201).json({

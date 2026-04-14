@@ -77,7 +77,10 @@ export default function SendMoney() {
 
   /* ── Lookup by phone ── */
   const handleLookup = async (overridePhone) => {
-    const p = (overridePhone || phone).replace(/\D/g, '');
+    let p = (overridePhone || phone).replace(/\D/g, '');
+    // If user entered country code (e.g. 919876543210), take only the last 10 digits
+    if (p.length > 10) p = p.slice(-10);
+    
     if (p.length < 10) { setError('Enter a valid 10-digit mobile number'); return; }
     setError(''); setLoading(true);
     try {
@@ -241,8 +244,8 @@ export default function SendMoney() {
                         <div style={{position:'relative',flex:1}}>
                           <Smartphone size={15} style={{position:'absolute',left:'0.75rem',top:'50%',transform:'translateY(-50%)',color:'var(--clr-text-dim)'}}/>
                           <input className="form-input" style={{paddingLeft:'2.25rem',fontSize:'1.05rem',letterSpacing:'0.05em'}}
-                            type="tel" maxLength={10} placeholder="10-digit mobile number"
-                            value={phone} onChange={e => setPhone(e.target.value.replace(/\D/g,''))}
+                            type="tel" maxLength={15} placeholder="e.g. 9876543210"
+                            value={phone} onChange={e => setPhone(e.target.value)}
                             onKeyDown={e => e.key === 'Enter' && handleLookup()}/>
                         </div>
                         <button className="btn btn-primary" onClick={() => handleLookup()} disabled={loading || phone.length < 10}>
