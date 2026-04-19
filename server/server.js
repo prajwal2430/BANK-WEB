@@ -3,14 +3,19 @@ const express = require('express');
 const cors    = require('cors');
 const connectDB = require('./config/db');
 
-// Connect to MongoDB
-connectDB();
-
-const app = express();
-
-// Middleware — allow all for development
+// Middleware
 app.use(cors());
 app.use(express.json());
+
+// Ensure DB is connected before every request
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Database connection failed' });
+  }
+});
 
 // Request logger
 app.use((req, _res, next) => {
