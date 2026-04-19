@@ -2,7 +2,9 @@
  * API Service Layer — all HTTP calls to the backend
  * Uses a relative /api path so Vite proxy forwards to backend (no CORS ever).
  */
-const BASE = '/api';
+// Use environment variable for API URL in production, fall back to /api for local proxying
+const BASE = import.meta.env.VITE_API_URL || '/api';
+
 
 const getToken = () => localStorage.getItem('nexa_token');
 
