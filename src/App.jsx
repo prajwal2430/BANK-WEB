@@ -42,10 +42,12 @@ const PublicGuard = () => {
 };
 
 function AppRoutes() {
+  const { isAuthenticated } = useApp();
+
   return (
     <Routes>
-      {/* Public landing */}
-      <Route path="/" element={<Landing />} />
+      {/* Public landing — Redirect to dashboard if already logged in */}
+      <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Landing />} />
 
       {/* Auth pages — redirect to dashboard if already logged in */}
       <Route element={<PublicGuard />}>
